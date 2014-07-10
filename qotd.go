@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
   _ "github.com/codegangsta/cli"
-  _ "github.com/Sirupsen/logrus"
+  "github.com/Sirupsen/logrus"
 )
 
 /* WANT:
@@ -29,15 +29,22 @@ How to write go (idomatic go)
 $CDPATH
 */
 
-func main() {
+var log = logrus.New()
+
+func init() {
 	rand.Seed(time.Now().UnixNano())
-	l, err := net.Listen("tcp", "localhost:3333")
+  log.Formatter = new(logrus.TextFormatter)
+}
+
+func main() {
+  port := "3333"
+	l, err := net.Listen("tcp", "localhost:" + port)
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		os.Exit(1)
 	}
 	defer l.Close()
-	fmt.Println("Listening")
+  log.Info("QOTD Server Started on Port " + port)
 	for {
 		conn, err := l.Accept()
 		if err != nil {

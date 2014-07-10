@@ -8,15 +8,17 @@ import (
 	"os"
 	"strings"
 	"time"
+  "strconv"
+
   _ "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
+  "github.com/nu7hatch/gouuid"
 )
 
 /* WANT:
 CLI args for port
 CLI args for file name
 TESTS
-Logging - logrus / built in?   (log)
 UDP
 */
 
@@ -56,18 +58,38 @@ func main() {
 }
 
 func handleRequest(conn net.Conn) {
-	quote := randomQuote("wisdom.txt")
+  requestUUID, err := uuid.NewV4()
+  if err != nil {
+    fmt.Println("error:", err)
+      return
+  }
+
+  log.WithFields(logrus.Fields{
+    "request": requestUUID.String(),
+    "client": conn.RemoteAddr().String(),
+  }).Info("Request Received")
+
+	quoteId, quote := randomQuote("wisdom.txt")
 	conn.Write([]byte(quote))
 	conn.Write([]byte("\r\n"))
+  log.WithFields(logrus.Fields{
+    "request": requestUUID.String(),
+    "client": conn.RemoteAddr().String(),
+  }).Info("Quote #" + strconv.Itoa(quoteId) + " Served")
+
 	conn.Close()
+  log.WithFields(logrus.Fields{
+    "request": requestUUID.String(),
+    "client": conn.RemoteAddr().String(),
+  }).Info("Connection Closed")
 }
 
-func randomQuote(fileName string) string {
+func randomQuote(fileName string) (int,string) {
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		panic(err)
 	}
 	quotes := strings.Split(string(file), "\n%\n")
 	randQuoteIndex := rand.Intn(len(quotes))
-	return quotes[randQuoteIndex]
+	return randQuoteIndex, quotes[randQuoteIndex]
 }

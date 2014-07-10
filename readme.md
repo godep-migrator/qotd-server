@@ -1,4 +1,4 @@
-Someday this will be a QOTD server written in go.  Prety spiffy.
+Someday this will be a QOTD server written in go.  Pretty spiffy.
 
 ## Author
 

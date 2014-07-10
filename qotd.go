@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"time"
+  _ "github.com/codegangsta/cli"
+  _ "github.com/Sirupsen/logrus"
 )
 
 /* WANT:

@@ -32,7 +32,7 @@ func main() {
 
   app.Action = func(c *cli.Context) {
     port := c.String("port")
-    fileName := "wisdom.txt"
+    fileName := c.Args()[0]
     l, err := net.Listen("tcp", "localhost:" + port)
     if err != nil {
       log.Fatal("Error listening: ", err.Error())

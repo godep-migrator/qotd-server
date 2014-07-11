@@ -10,7 +10,7 @@ import (
 	"time"
   "strconv"
 
-  _ "github.com/codegangsta/cli"
+  "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
   "github.com/nu7hatch/gouuid"
 )
@@ -23,22 +23,30 @@ func init() {
 }
 
 func main() {
-  port := "3333"
-	l, err := net.Listen("tcp", "localhost:" + port)
-	if err != nil {
-		fmt.Println("Error listening:", err.Error())
-		os.Exit(1)
-	}
-	defer l.Close()
-  log.Info("QOTD Server Started on Port " + port)
-	for {
-		conn, err := l.Accept()
-		if err != nil {
-			fmt.Println("Error accepting: ", err.Error())
-			os.Exit(1)
-		}
-		go handleRequest(conn)
-	}
+  app := cli.NewApp()
+  app.Name = "QOTD"
+  app.Usage = "Run a QOTD Server"
+  app.Action = func(c *cli.Context) {
+    port := "3333"
+    l, err := net.Listen("tcp", "localhost:" + port)
+    if err != nil {
+      fmt.Println("Error listening:", err.Error())
+      os.Exit(1)
+    }
+    defer l.Close()
+    log.Info("QOTD Server Started on Port " + port)
+    for {
+      conn, err := l.Accept()
+      if err != nil {
+        fmt.Println("Error accepting: ", err.Error())
+        os.Exit(1)
+      }
+      go handleRequest(conn)
+    }
+  }
+
+  app.Run(os.Args)
+
 }
 
 func handleRequest(conn net.Conn) {

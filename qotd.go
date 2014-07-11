@@ -26,11 +26,15 @@ func main() {
   app := cli.NewApp()
   app.Name = "QOTD"
   app.Usage = "Run a QOTD Server"
+  app.Flags = []cli.Flag {
+    cli.StringFlag{"port,p", "3333", "port to bind the server to"},
+  }
+
   app.Action = func(c *cli.Context) {
-    port := "3333"
+    port := c.String("port")
     l, err := net.Listen("tcp", "localhost:" + port)
     if err != nil {
-      fmt.Println("Error listening:", err.Error())
+      log.Fatal("Error listening: ", err.Error())
       os.Exit(1)
     }
     defer l.Close()
@@ -46,7 +50,6 @@ func main() {
   }
 
   app.Run(os.Args)
-
 }
 
 func handleRequest(conn net.Conn) {

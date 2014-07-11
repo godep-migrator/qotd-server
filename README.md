@@ -25,7 +25,7 @@ This server is not yet RFC 865 compliant.  But I'm working on it.
 ## Next Steps / Project Goals
 
 - [ ] Accept file as CLI argument
-- [ ] Accept port as CLI argument
+- [X] Accept port as CLI argument
 - [ ] Server should run in 865 compliant or non-compliant mode (512
 character truncation)
 - [ ] Server should listen on UDP

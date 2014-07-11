@@ -33,6 +33,8 @@ func main() {
   app.Action = func(c *cli.Context) {
     port := c.String("port")
     fileName := c.Args()[0]
+    quotes := loadQuotes(fileName)
+
     l, err := net.Listen("tcp", "localhost:" + port)
     if err != nil {
       log.Fatal("Error listening: ", err.Error())
@@ -46,14 +48,14 @@ func main() {
         fmt.Println("Error accepting: ", err.Error())
         os.Exit(1)
       }
-      go handleRequest(conn, fileName)
+      go serveRandomQuote(conn, quotes)
     }
   }
 
   app.Run(os.Args)
 }
 
-func handleRequest(conn net.Conn, filename string) {
+func serveRandomQuote(conn net.Conn, quotes []string) {
   requestUUID, err := uuid.NewV4()
   if err != nil {
     fmt.Println("error:", err)
@@ -65,7 +67,9 @@ func handleRequest(conn net.Conn, filename string) {
     "client": conn.RemoteAddr().String(),
   }).Info("Request Received")
 
-  quoteId, quote := randomQuote(filename)
+  quoteId := rand.Intn(len(quotes))
+  var quote = quotes[quoteId]
+
   conn.Write([]byte(quote))
   conn.Write([]byte("\r\n"))
   log.WithFields(logrus.Fields{
@@ -80,14 +84,13 @@ func handleRequest(conn net.Conn, filename string) {
   }).Info("Connection Closed")
 }
 
-func randomQuote(fileName string) (int,string) {
+func loadQuotes(fileName string) []string{
   file, err := ioutil.ReadFile(fileName)
   if err != nil {
     panic(err)
   }
   quotes := strings.Split(string(file), "\n%\n")
-  randQuoteIndex := rand.Intn(len(quotes))
-  return randQuoteIndex, quotes[randQuoteIndex]
+  return quotes
 }
 
 /* Notes

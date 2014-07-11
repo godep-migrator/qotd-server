@@ -81,9 +81,9 @@ func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
 		return
 	}
 
-	daytime := time.Now().String()
+	quote := "Here you are on UDP getting a quote"
 
-	conn.WriteToUDP([]byte(daytime), addr)
+	conn.WriteToUDP([]byte(quote), addr)
 }
 
 func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {

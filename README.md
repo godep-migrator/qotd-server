@@ -26,8 +26,9 @@ This server is not yet RFC 865 compliant.  But I'm working on it.
 
 - [X] Accept file as CLI argument
 - [ ] Accept Quotes via Standard In
+- [ ] Accept a URL for a quote file
 - [X] Accept port as CLI argument
-- [ ] Server should run in 865 compliant or non-compliant mode (512
+- [X] Server should run in 865 compliant or non-compliant mode (512
 character truncation)
 - [ ] Server should listen on UDP
 - [ ] Server should be well tested

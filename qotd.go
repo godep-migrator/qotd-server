@@ -33,6 +33,8 @@ func main() {
   app.Flags = []cli.Flag {
     cli.StringFlag{"port,p", "3333", "port to bind the server to"},
     cli.BoolFlag{"strict", "quotes served in RFC 865 strict mode"},
+    cli.BoolFlag{"no-tcp", "server does not listen on tcp"},
+    cli.BoolFlag{"no-udp", "server does not listen on udp"},
   }
 
   app.Action = func(c *cli.Context) {
@@ -104,11 +106,3 @@ func loadQuotes(fileName string) []string{
   quotes := strings.Split(string(file), "\n%\n")
   return quotes
 }
-
-/* Notes
-Ginkgo
-gofmt
-testing TCP??????
-CSP - Communicating sequential processes
-How to write go (idomatic go)
-*/

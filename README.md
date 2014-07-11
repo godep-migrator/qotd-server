@@ -33,6 +33,7 @@ character truncation)
 - [ ] Server should listen on UDP
 - [ ] Server should be well tested
 - [ ] Installable through homebrew
+- [ ] Advertise QOTD over MDNS
 
 ## Install through homebrew
 

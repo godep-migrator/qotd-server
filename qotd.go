@@ -59,7 +59,7 @@ func main() {
     log.Info("QOTD Server Started on Port " + port)
     for {
       conn, err := tcp.Accept()
-      //serveUDPRandomQuote(updSock, quotes, strictMode)
+      serveUDPRandomQuote(updSock, quotes, strictMode)
 
       if err != nil {
         fmt.Println("Error accepting: ", err.Error())

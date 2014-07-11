@@ -15,22 +15,6 @@ import (
   "github.com/nu7hatch/gouuid"
 )
 
-/* WANT:
-CLI args for port
-CLI args for file name
-TESTS
-UDP
-*/
-
-/* Notes
-Ginkgo
-gofmt
-testing TCP??????
-CSP - Communicating sequential processes
-How to write go (idomatic go)
-$CDPATH
-*/
-
 var log = logrus.New()
 
 func init() {
@@ -93,3 +77,11 @@ func randomQuote(fileName string) (int,string) {
 	randQuoteIndex := rand.Intn(len(quotes))
 	return randQuoteIndex, quotes[randQuoteIndex]
 }
+
+/* Notes
+Ginkgo
+gofmt
+testing TCP??????
+CSP - Communicating sequential processes
+How to write go (idomatic go)
+*/

@@ -22,6 +22,16 @@ really short.  Here's the gist of it:
 
 This server is not yet RFC 865 compliant.  But I'm working on it.
 
+## Next Steps / Project Goals
+
+- [ ] Accept file as CLI argument
+- [ ] Accept port as CLI argument
+- [ ] Server should run in 865 compliant or non-compliant mode (512
+character truncation)
+- [ ] Server should listen on UDP
+- [ ] Server should be well tested
+- [ ] Installable through homebrew
+
 ## Author
 
 This was written by [Nick Rowe](http://dcxn.com) in the summer of

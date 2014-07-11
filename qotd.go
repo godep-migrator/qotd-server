@@ -44,14 +44,23 @@ func main() {
     strictMode := c.Bool("strict")
 
     tcp, err := net.Listen("tcp", "localhost:" + port)
+
+    udpService := ":" + port
+    println(udpService)
+    updAddr, _ := net.ResolveUDPAddr("up4", udpService)
+    updSock, _ := net.ListenUDP("udp", updAddr)
+
     if err != nil {
       log.Fatal("Error listening: ", err.Error())
       os.Exit(1)
     }
     defer tcp.Close()
+    defer updSock.Close()
     log.Info("QOTD Server Started on Port " + port)
     for {
       conn, err := tcp.Accept()
+      //serveUDPRandomQuote(updSock, quotes, strictMode)
+
       if err != nil {
         fmt.Println("Error accepting: ", err.Error())
         os.Exit(1)
@@ -61,6 +70,20 @@ func main() {
   }
 
   app.Run(os.Args)
+}
+
+func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
+  println("Invoked")
+	var buf [512]byte
+
+	_, addr, err := conn.ReadFromUDP(buf[0:])
+	if err != nil {
+		return
+	}
+
+	daytime := time.Now().String()
+
+	conn.WriteToUDP([]byte(daytime), addr)
 }
 
 func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {

@@ -35,6 +35,11 @@ character truncation)
 - [ ] Installable through homebrew
 - [ ] Advertise QOTD over MDNS
 
+## Client Goals
+
+- [ ] Find Server over MDNS
+- [ ] Allow `host port` as args
+
 ## Install through homebrew
 
 Notes:

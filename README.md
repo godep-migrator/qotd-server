@@ -32,6 +32,14 @@ character truncation)
 - [ ] Server should be well tested
 - [ ] Installable through homebrew
 
+## Install through homebrew
+
+Notes:
+  - https://github.com/Homebrew/homebrew-binary
+  - https://github.com/Homebrew/homebrew/pull/20895
+  - https://github.com/Homebrew/homebrew/pull/21810/files
+  - https://github.com/Homebrew/homebrew/issues/23703
+
 ## Author
 
 This was written by [Nick Rowe](http://dcxn.com) in the summer of

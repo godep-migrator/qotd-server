@@ -27,13 +27,14 @@ RFC 865 defines the [Quote of the Day
 Protocol](http://tools.ietf.org/html/rfc865). The specification is
 really short.  Here's the gist of it:
 
-- A TCP port is opened on port 17
+- The Server listens on TCP (port 17, by convention)
+- The Server may also listen on UDP (also port 17, by convention)
 - On connection a quote is served
-- The connection is closed
-- The service may also listen on UDP
+- The connection is closed immediately after a quote is serve
 - Quotes should be less than 512 characters long
 
-This server is not yet RFC 865 compliant.  But I'm working on it.
+This server is not yet RFC 865 compliant.  It currently doesn't handle
+UDP.
 
 ## Next Steps / Project Goals
 

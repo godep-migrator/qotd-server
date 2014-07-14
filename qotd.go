@@ -92,6 +92,7 @@ func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
 	quote := "Here you are on UDP getting a quote"
 
 	conn.WriteToUDP([]byte(quote), addr)
+  conn.Close()
 }
 
 func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {

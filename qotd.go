@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -83,7 +85,7 @@ func listenForTcp(port string, quotes []string, strictMode bool) {
 		os.Exit(1)
 	}
 	defer tcp.Close()
-	log.Info("QOTD Server Started on Port " + port)
+	log.Info("TCP: QOTD Server Started on Port " + port)
 	for {
 		conn, err := tcp.Accept()
 
@@ -107,6 +109,7 @@ func listenForUdp(port string, quotes []string, strictMode bool) {
 		log.Fatal("Error listening: ", udpErr.Error())
 		os.Exit(1)
 	}
+	log.Info("UDP: QOTD Server Started on Port " + port)
 	defer updSock.Close()
 	for {
 		serveUDPRandomQuote(updSock, quotes, strictMode)
@@ -177,7 +180,27 @@ func randomQuoteFormattedForDelivery(quotes []string, strictMode bool) (string, 
 	return quote, quoteId
 }
 
-func loadQuotes(fileName string) []string {
+func loadQuotes(path string) []string {
+	u, err := url.Parse(path)
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https") {
+		return loadQuotesFromFile(path)
+	} else {
+		return loadQuotesFromHTTP(path)
+	}
+}
+
+func loadQuotesFromHTTP(address string) []string {
+	resp, err := http.Get(address)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer resp.Body.Close()
+	rawData, err := ioutil.ReadAll(resp.Body)
+	quotes := strings.Split(string(rawData), "\n%\n")
+	return quotes
+}
+
+func loadQuotesFromFile(fileName string) []string {
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Fatal(err.Error())

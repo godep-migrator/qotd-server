@@ -38,6 +38,10 @@ func main() {
 	}
 
 	app.Action = func(c *cli.Context) {
+		if len(c.Args()) != 1 {
+			log.Fatal("Server must be started with a path to a file with quotes")
+		}
+
 		port := c.String("port")
 		fileName := c.Args()[0]
 		quotes := loadQuotes(fileName)

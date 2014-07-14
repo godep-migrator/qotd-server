@@ -4,15 +4,15 @@ This is a QOTD server written as a small project for exploring Go.
 
 ## Try it out
 
-- Install the server: `go get -u github.com/nixterrimus/go-qotd`
-- Start the server: `go-qotd wisdom.txt`
+- Install the server: `go get -u github.com/nixterrimus/qotd-server`
+- Start the server: `qotd-server wisdom.txt`
 - In another terminal make a request: `nc localhost 3333`
 
 ## Quote File Format
 
 This QOTD server has a mandatory files argument of a quote file, for
 example to run with the `wisdom.txt` file included in the git repository
-you would use: `go-qotd wisdom.txt`.
+you would use: `qotd-server wisdom.txt`.
 
 The quote file format is exactly the same as the [fortune file
 format](http://en.wikipedia.org/wiki/Fortune_(Unix)#Fortune_files), that

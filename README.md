@@ -50,12 +50,13 @@ as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 - [ ] Accept Quotes via Standard In
 - [ ] Accept a URL for a quote file
 - [X] Accept port as CLI argument
-- [X] Server should run in 865 compliant or non-compliant mode (512
+- [ ] Server should run in 865 compliant or non-compliant mode (512
 character truncation)
-- [ ] Server should listen on UDP
+- [X] Server should listen on UDP
 - [ ] Server should be well tested
 - [ ] Installable through homebrew
 - [ ] Advertise QOTD over MDNS
+- [ ] Never serve clients the same quote twice
 
 ## Client Goals
 

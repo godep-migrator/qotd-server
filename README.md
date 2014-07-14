@@ -70,7 +70,12 @@ Notes:
   - https://github.com/Homebrew/homebrew/pull/21810/files
   - https://github.com/Homebrew/homebrew/issues/23703
 
-## Author
+## Author & Thanks
 
 This was written by [Nick Rowe](http://dcxn.com) in the summer of
-2014 with guidance by Rafe Colton.
+2014.
+
+Thanks to Rafe Colton for encouraging me to get started with go and
+providing guidance on getting started.
+
+Thanks to Parker Moore for hacking on UDP support.

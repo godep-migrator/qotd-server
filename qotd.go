@@ -119,11 +119,9 @@ func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
 		"client":  addr.String(),
 	}).Info("UDP Request Received")
 
-	quoteId := rand.Intn(len(quotes))
-	var quote = quotes[quoteId]
-
+	quote, quoteId := randomQuoteFormattedForDelivery(quotes, strictMode)
 	conn.WriteToUDP([]byte(quote), addr)
-	conn.WriteToUDP([]byte("\r\n"), addr)
+
 	log.WithFields(logrus.Fields{
 		"request": requestUUID.String(),
 		"client":  addr.String(),
@@ -142,27 +140,31 @@ func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {
 		"client":  conn.RemoteAddr().String(),
 	}).Info("TCP Request Received")
 
-	quoteId := rand.Intn(len(quotes))
-	var quote = quotes[quoteId]
-	if strictMode && len(quote) > RFC865MaxLength {
-		// 3 bytes for ..., 2 bytes for closing \r\n
-		littleQuote := []byte(quote)[0 : RFC865MaxLength-6]
-		conn.Write(littleQuote)
-		conn.Write([]byte("..."))
-	} else {
-		conn.Write([]byte(quote))
-		log.WithFields(logrus.Fields{
-			"request": requestUUID.String(),
-			"client":  conn.RemoteAddr().String(),
-		}).Info("TCP Quote #" + strconv.Itoa(quoteId) + " Served")
-	}
+	quote, quoteId := randomQuoteFormattedForDelivery(quotes, strictMode)
+	conn.Write([]byte(quote))
+	log.WithFields(logrus.Fields{
+		"request": requestUUID.String(),
+		"client":  conn.RemoteAddr().String(),
+	}).Info("TCP Quote #" + strconv.Itoa(quoteId) + " Served")
 
-	conn.Write([]byte("\r\n"))
 	conn.Close()
 	log.WithFields(logrus.Fields{
 		"request": requestUUID.String(),
 		"client":  conn.RemoteAddr().String(),
 	}).Info("Connection Closed")
+}
+
+func randomQuoteFormattedForDelivery(quotes []string, strictMode bool) (string, int) {
+	quoteId := rand.Intn(len(quotes))
+	var quote = quotes[quoteId]
+	if strictMode && len(quote) > RFC865MaxLength {
+		// 3 bytes for ..., 2 bytes for closing \r\n
+		quote = string([]byte(quote)[0 : RFC865MaxLength-6])
+		quote = quote + "..."
+	}
+
+	quote = quote + "\r\n"
+	return quote, quoteId
 }
 
 func loadQuotes(fileName string) []string {

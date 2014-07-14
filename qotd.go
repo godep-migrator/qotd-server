@@ -66,13 +66,13 @@ func main() {
     defer updSock.Close()
     log.Info("QOTD Server Started on Port " + port)
     for {
-      conn, err := tcp.Accept()
+      //conn, err := tcp.Accept()
 
-      if err != nil {
-        fmt.Println("Error accepting: ", err.Error())
-        os.Exit(1)
-      }
-      go serveRandomQuote(conn, quotes, strictMode)
+      //if err != nil {
+        //fmt.Println("Error accepting: ", err.Error())
+        //os.Exit(1)
+      //}
+      //go serveRandomQuote(conn, quotes, strictMode)
       go serveUDPRandomQuote(updSock, quotes, strictMode)
     }
   }
@@ -81,13 +81,14 @@ func main() {
 }
 
 func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
-  println("Invoked")
-	var buf [512]byte
+  buf := make([]byte, 512)
 
 	_, addr, err := conn.ReadFromUDP(buf[0:])
-	if err != nil {
-		return
-	}
+  if (err != nil) {
+    panic(err)
+    os.Exit(1)
+  }
+  println("Invoked")
 
 	quote := "Here you are on UDP getting a quote"
 

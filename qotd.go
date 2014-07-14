@@ -43,41 +43,45 @@ func main() {
 		quotes := loadQuotes(fileName)
 		strictMode := c.Bool("strict")
 
+		go listenForUdp(port, quotes, strictMode)
 		tcp, err := net.Listen("tcp", "localhost:"+port)
-
-		udpService := ":" + port
-		println(udpService)
-		updAddr, udpErr := net.ResolveUDPAddr("udp", udpService)
-		if udpErr != nil {
-			log.Fatal("Error Resolving UDP Address: ", udpErr.Error())
-			os.Exit(1)
-		}
-		updSock, udpErr := net.ListenUDP("udp", updAddr)
-		if udpErr != nil {
-			log.Fatal("Error listening: ", udpErr.Error())
-			os.Exit(1)
-		}
-
 		if err != nil {
 			log.Fatal("Error listening: ", err.Error())
 			os.Exit(1)
 		}
 		defer tcp.Close()
-		defer updSock.Close()
 		log.Info("QOTD Server Started on Port " + port)
 		for {
-			//conn, err := tcp.Accept()
+			conn, err := tcp.Accept()
 
-			//if err != nil {
-			//fmt.Println("Error accepting: ", err.Error())
-			//os.Exit(1)
-			//}
-			//go serveRandomQuote(conn, quotes, strictMode)
-			serveUDPRandomQuote(updSock, quotes, strictMode)
+			if err != nil {
+				fmt.Println("Error accepting: ", err.Error())
+				os.Exit(1)
+			}
+			go serveRandomQuote(conn, quotes, strictMode)
 		}
 	}
 
 	app.Run(os.Args)
+}
+
+func listenForUdp(port string, quotes []string, strictMode bool) {
+	udpService := ":" + port
+	println(udpService)
+	updAddr, udpErr := net.ResolveUDPAddr("udp", udpService)
+	if udpErr != nil {
+		log.Fatal("Error Resolving UDP Address: ", udpErr.Error())
+		os.Exit(1)
+	}
+	updSock, udpErr := net.ListenUDP("udp", updAddr)
+	if udpErr != nil {
+		log.Fatal("Error listening: ", udpErr.Error())
+		os.Exit(1)
+	}
+	defer updSock.Close()
+	for {
+		serveUDPRandomQuote(updSock, quotes, strictMode)
+	}
 }
 
 func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {

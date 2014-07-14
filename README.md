@@ -33,6 +33,20 @@ really short.  Here's the gist of it:
 - The connection is closed immediately after a quote is serve
 - Quotes should be less than 512 characters long
 
+This server **can** be started RFC 865 compliant mode with the
+`--strict` flag.
+
+## Strict Mode
+
+This QOTD server can be started in strict mode, it must be run as a super
+user because it binds to port 17.  This ensures that the server is RFC
+865 compliant.
+
+Strict mode does the following things:
+
+- Starts on port 17
+- Listens on both TCP and UDP
+- Serves quotes that are 512 characters or less
 ## TCP and UDP
 
 By default the server listens on both TCP and UDP on the same port.  If

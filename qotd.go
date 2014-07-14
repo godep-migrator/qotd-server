@@ -47,8 +47,16 @@ func main() {
 
     udpService := ":" + port
     println(udpService)
-    updAddr, _ := net.ResolveUDPAddr("up4", udpService)
-    updSock, _ := net.ListenUDP("udp", updAddr)
+    updAddr, udpErr := net.ResolveUDPAddr("udp", udpService)
+    if udpErr != nil {
+      log.Fatal("Error Resolving UDP Address: ", udpErr.Error())
+      os.Exit(1)
+    }
+    updSock, udpErr := net.ListenUDP("udp", updAddr)
+    if udpErr != nil {
+      log.Fatal("Error listening: ", udpErr.Error())
+      os.Exit(1)
+    }
 
     if err != nil {
       log.Fatal("Error listening: ", err.Error())

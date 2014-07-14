@@ -64,7 +64,7 @@ as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 - [ ] Accept Quotes via Standard In
 - [ ] Accept a URL for a quote file
 - [X] Accept port as CLI argument
-- [ ] Server should run in 865 compliant or non-compliant mode (512
+- [X] Server should run in 865 compliant or non-compliant mode (512
 character truncation)
 - [X] Server should listen on UDP
 - [ ] Server should be well tested

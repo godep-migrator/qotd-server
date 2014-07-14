@@ -87,7 +87,6 @@ func listenForTcp(port string, quotes []string, strictMode bool) {
 
 func listenForUdp(port string, quotes []string, strictMode bool) {
 	udpService := ":" + port
-	println(udpService)
 	updAddr, udpErr := net.ResolveUDPAddr("udp", udpService)
 	if udpErr != nil {
 		log.Fatal("Error Resolving UDP Address: ", udpErr.Error())
@@ -105,19 +104,30 @@ func listenForUdp(port string, quotes []string, strictMode bool) {
 }
 
 func serveUDPRandomQuote(conn *net.UDPConn, quotes []string, strictMode bool) {
+	requestUUID, err := uuid.NewV4()
 	buf := make([]byte, 512)
 
 	_, addr, err := conn.ReadFromUDP(buf[0:])
+
 	if err != nil {
 		panic(err)
 		os.Exit(1)
 	}
-	println("Invoked")
 
-	quote := "Here you are on UDP getting a quote"
+	log.WithFields(logrus.Fields{
+		"request": requestUUID.String(),
+		"client":  addr.String(),
+	}).Info("UDP Request Received")
+
+	quoteId := rand.Intn(len(quotes))
+	var quote = quotes[quoteId]
 
 	conn.WriteToUDP([]byte(quote), addr)
 	conn.WriteToUDP([]byte("\r\n"), addr)
+	log.WithFields(logrus.Fields{
+		"request": requestUUID.String(),
+		"client":  addr.String(),
+	}).Info("UDP Quote #" + strconv.Itoa(quoteId) + " Served")
 }
 
 func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {
@@ -130,7 +140,7 @@ func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {
 	log.WithFields(logrus.Fields{
 		"request": requestUUID.String(),
 		"client":  conn.RemoteAddr().String(),
-	}).Info("Request Received")
+	}).Info("TCP Request Received")
 
 	quoteId := rand.Intn(len(quotes))
 	var quote = quotes[quoteId]
@@ -144,7 +154,7 @@ func serveRandomQuote(conn net.Conn, quotes []string, strictMode bool) {
 		log.WithFields(logrus.Fields{
 			"request": requestUUID.String(),
 			"client":  conn.RemoteAddr().String(),
-		}).Info("Quote #" + strconv.Itoa(quoteId) + " Served")
+		}).Info("TCP Quote #" + strconv.Itoa(quoteId) + " Served")
 	}
 
 	conn.Write([]byte("\r\n"))

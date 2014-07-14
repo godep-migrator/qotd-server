@@ -33,6 +33,20 @@ really short.  Here's the gist of it:
 - The connection is closed immediately after a quote is serve
 - Quotes should be less than 512 characters long
 
+This server **can** be started RFC 865 compliant mode with the
+`--strict` flag.
+
+## Strict Mode
+
+This QOTD server can be started in strict mode, it must be run as a super
+user because it binds to port 17.  This ensures that the server is RFC
+865 compliant.
+
+Strict mode does the following things:
+
+- Starts on port 17
+- Listens on both TCP and UDP
+- Serves quotes that are 512 characters or less
 ## TCP and UDP
 
 By default the server listens on both TCP and UDP on the same port.  If
@@ -50,7 +64,7 @@ as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 - [ ] Accept Quotes via Standard In
 - [ ] Accept a URL for a quote file
 - [X] Accept port as CLI argument
-- [ ] Server should run in 865 compliant or non-compliant mode (512
+- [X] Server should run in 865 compliant or non-compliant mode (512
 character truncation)
 - [X] Server should listen on UDP
 - [ ] Server should be well tested

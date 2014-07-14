@@ -45,6 +45,12 @@ func main() {
 		startUdp := !c.Bool("no-udp")
 		startTcp := !c.Bool("no-tcp")
 
+		if strictMode {
+			port = "17"
+			startTcp = true
+			startUdp = true
+		}
+
 		if startUdp {
 			go listenForUdp(port, quotes, strictMode)
 		}

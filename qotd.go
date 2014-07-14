@@ -42,27 +42,35 @@ func main() {
 		fileName := c.Args()[0]
 		quotes := loadQuotes(fileName)
 		strictMode := c.Bool("strict")
+		startUdp := !c.Bool("no-udp")
 
-		go listenForUdp(port, quotes, strictMode)
-		tcp, err := net.Listen("tcp", "localhost:"+port)
-		if err != nil {
-			log.Fatal("Error listening: ", err.Error())
-			os.Exit(1)
+		if startUdp {
+			go listenForUdp(port, quotes, strictMode)
 		}
-		defer tcp.Close()
-		log.Info("QOTD Server Started on Port " + port)
-		for {
-			conn, err := tcp.Accept()
 
-			if err != nil {
-				fmt.Println("Error accepting: ", err.Error())
-				os.Exit(1)
-			}
-			go serveRandomQuote(conn, quotes, strictMode)
-		}
+		listenForTcp(port, quotes, strictMode)
 	}
 
 	app.Run(os.Args)
+}
+
+func listenForTcp(port string, quotes []string, strictMode bool) {
+	tcp, err := net.Listen("tcp", "localhost:"+port)
+	if err != nil {
+		log.Fatal("Error listening: ", err.Error())
+		os.Exit(1)
+	}
+	defer tcp.Close()
+	log.Info("QOTD Server Started on Port " + port)
+	for {
+		conn, err := tcp.Accept()
+
+		if err != nil {
+			fmt.Println("Error accepting: ", err.Error())
+			os.Exit(1)
+		}
+		go serveRandomQuote(conn, quotes, strictMode)
+	}
 }
 
 func listenForUdp(port string, quotes []string, strictMode bool) {

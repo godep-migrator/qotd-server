@@ -43,12 +43,24 @@ func main() {
 		quotes := loadQuotes(fileName)
 		strictMode := c.Bool("strict")
 		startUdp := !c.Bool("no-udp")
+		startTcp := !c.Bool("no-tcp")
 
 		if startUdp {
 			go listenForUdp(port, quotes, strictMode)
 		}
 
-		listenForTcp(port, quotes, strictMode)
+		if startTcp {
+			go listenForTcp(port, quotes, strictMode)
+		}
+
+		if startTcp || startUdp {
+			// Keep this busy
+			for {
+				time.Sleep(100 * time.Millisecond)
+			}
+		} else {
+			log.Fatal("Server not started on TCP or UDP, don't pass both --no-tcp and --no-udp")
+		}
 	}
 
 	app.Run(os.Args)

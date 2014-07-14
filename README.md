@@ -21,7 +21,7 @@ is to say:
 - It is a text file
 - Each quote is separated by a `%` character of its own line
 
-## The QOTD Protocol
+## The QOTD Protocol / RFC 865
 
 RFC 865 defines the [Quote of the Day
 Protocol](http://tools.ietf.org/html/rfc865). The specification is
@@ -33,8 +33,16 @@ really short.  Here's the gist of it:
 - The connection is closed immediately after a quote is serve
 - Quotes should be less than 512 characters long
 
-This server is not yet RFC 865 compliant.  It currently doesn't handle
-UDP.
+## TCP and UDP
+
+By default the server listens on both TCP and UDP on the same port.  If
+that doesn't fit your needs, you have a couple of flags:
+
+- `no-tcp` - Starts the server and only listens on UDP
+- `no-udp` - Starts the server and only listens on TCP
+
+You can test the TCP interface with netcat: `nc localhost 3333` And you can test on UDP
+as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 
 ## Next Steps / Project Goals
 

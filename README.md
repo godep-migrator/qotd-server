@@ -5,8 +5,21 @@ This is a QOTD server written as a small project for exploring Go.
 ## Try it out
 
 - Install the server: `go get -u github.com/nixterrimus/go-qotd`
-- Start the server: `go-qotd`
+- Start the server: `go-qotd wisdom.txt`
 - In another terminal make a request: `nc localhost 3333`
+
+## Quote File Format
+
+This QOTD server has a mandatory files argument of a quote file, for
+example to run with the `wisdom.txt` file included in the git repository
+you would use: `go-qotd wisdom.txt`.
+
+The quote file format is exactly the same as the [fortune file
+format](http://en.wikipedia.org/wiki/Fortune_(Unix)#Fortune_files), that
+is to say:
+
+- It is a text file
+- Each quote is separated by a `%` character of its own line
 
 ## The QOTD Protocol
 
@@ -14,13 +27,14 @@ RFC 865 defines the [Quote of the Day
 Protocol](http://tools.ietf.org/html/rfc865). The specification is
 really short.  Here's the gist of it:
 
-- A TCP port is opened on port 17
+- The Server listens on TCP (port 17, by convention)
+- The Server may also listen on UDP (also port 17, by convention)
 - On connection a quote is served
-- The connection is closed
-- The service may also listen on UDP
+- The connection is closed immediately after a quote is serve
 - Quotes should be less than 512 characters long
 
-This server is not yet RFC 865 compliant.  But I'm working on it.
+This server is not yet RFC 865 compliant.  It currently doesn't handle
+UDP.
 
 ## Next Steps / Project Goals
 

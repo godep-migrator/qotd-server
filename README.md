@@ -3,6 +3,10 @@ full featured.
 
 > You can get *anywhere* in ten minutes if you drive fast enough.
 
+There's also a sister project, [QOTD
+Client](https://github.com/nixterrimus/qotd-client).  While netcat works
+good for testing the client is more full featured.
+
 ## Try it out
 
 - Install the server: `go get -u github.com/nixterrimus/qotd-server`
@@ -100,11 +104,6 @@ character truncation)
 - [ ] Installable through homebrew
 - [ ] Advertise QOTD over MDNS
 - [ ] Never serve clients the same quote twice
-
-## Client Goals
-
-- [ ] Find Server over MDNS
-- [ ] Allow `host port` as args
 
 ## Install through homebrew
 

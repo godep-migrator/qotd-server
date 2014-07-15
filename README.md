@@ -5,8 +5,18 @@ This is a QOTD server written as a small project for exploring Go.
 ## Try it out
 
 - Install the server: `go get -u github.com/nixterrimus/qotd-server`
-- Start the server: `qotd-server wisdom.txt`
+- Start the server: `qotd-server https://raw.githubusercontent.com/nixterrimus/qotd-server/master/wisdom.txt`
 - In another terminal make a request: `nc localhost 3333`
+
+## Specifying a File
+
+The QOTD server needs a path to a file or an HTTP URL that contains
+quotes, this argument is mandatory and should specified as the first
+argument.  Here are some examples:
+
+- `qotd-server funny.txt`
+- `qotd-server`
+https://raw.githubusercontent.com/nixterrimus/qotd-server/master/wisdom.txt
 
 ## Quote File Format
 
@@ -63,7 +73,7 @@ as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 
 - [X] Accept file as CLI argument
 - [ ] Accept Quotes via Standard In
-- [ ] Accept a URL for a quote file
+- [X] Accept a URL for a quote file
 - [X] Accept port as CLI argument
 - [X] Server should run in 865 compliant or non-compliant mode (512
 character truncation)

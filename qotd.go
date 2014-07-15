@@ -37,6 +37,7 @@ func main() {
 		cli.BoolFlag{"strict", "quotes served in RFC 865 strict mode"},
 		cli.BoolFlag{"no-tcp", "server does not listen on tcp"},
 		cli.BoolFlag{"no-udp", "server does not listen on udp"},
+		cli.BoolFlag{"no-mdns", "server does not advertise over mdns"},
 	}
 
 	app.Action = func(c *cli.Context) {
@@ -50,12 +51,17 @@ func main() {
 		strictMode := c.Bool("strict")
 		startUdp := !c.Bool("no-udp")
 		startTcp := !c.Bool("no-tcp")
+		advertiseService := !c.Bool("no-mdns")
 
 		if strictMode {
 			port = "17"
 			startTcp = true
 			startUdp = true
 		}
+
+    if advertiseService {
+      advertiseQOTDService(startTcp, startUdp)
+    }
 
 		if startUdp {
 			go listenForUdp(port, quotes, strictMode)
@@ -76,6 +82,10 @@ func main() {
 	}
 
 	app.Run(os.Args)
+}
+
+func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool){
+
 }
 
 func listenForTcp(port string, quotes []string, strictMode bool) {

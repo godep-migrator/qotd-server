@@ -1,4 +1,5 @@
-This is a QOTD server written as a small project for exploring Go.
+This is a [QOTD server](http://tools.ietf.org/html/rfc865), it is pretty
+full featured.
 
 > You can get *anywhere* in ten minutes if you drive fast enough.
 

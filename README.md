@@ -70,6 +70,19 @@ that doesn't fit your needs, you have a couple of flags:
 You can test the TCP interface with netcat: `nc localhost 3333` And you can test on UDP
 as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 
+## Service Discovery
+
+The QOTD service is, by default advertised over
+[MDNS](http://en.wikipedia.org/wiki/Multicast_DNS).  This makes it
+possible for clients to find the server with zero config, pretty neat!
+
+If that doesn't work for you, can specify `--no-mdns` to turn off
+advertising the service.
+
+Since some networks restrict publishing multicast DNS it's possible that
+this feature just won't work on your network.  . Notably, multicast cannot be used 
+in any sort of cloud, or shared infrastructure environment.
+
 ## Next Steps / Project Goals
 
 - [X] Accept file as CLI argument

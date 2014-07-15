@@ -47,6 +47,7 @@ Strict mode does the following things:
 - Starts on port 17
 - Listens on both TCP and UDP
 - Serves quotes that are 512 characters or less
+
 ## TCP and UDP
 
 By default the server listens on both TCP and UDP on the same port.  If

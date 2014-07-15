@@ -90,6 +90,7 @@ func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool){
 
 func listenForTcp(port string, quotes []string, strictMode bool) {
 	tcp, err := net.Listen("tcp", "localhost:"+port)
+	tcp, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		log.Fatal("Error listening: ", err.Error())
 		os.Exit(1)

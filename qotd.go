@@ -15,6 +15,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/nu7hatch/gouuid"
+  "github.com/armon/mdns"
 )
 
 const (
@@ -60,7 +61,8 @@ func main() {
 		}
 
     if advertiseService {
-      advertiseQOTDService(startTcp, startUdp)
+      advertisedService := advertiseQOTDService(startTcp, startUdp, port)
+      defer advertisedService.Shutdown()
     }
 
 		if startUdp {
@@ -84,12 +86,23 @@ func main() {
 	app.Run(os.Args)
 }
 
-func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool){
+func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool, port string) *mdns.Server{
+  host, _ := os.Hostname()
+  println(host)
+  service := &mdns.MDNSService{
+    Instance: host,
+    Service: "_qotd._tcp",
+    Addr:    []byte{0,0,0,0},
+    Port:    3333,
+    Info:    "QOTD Service",
+  }
+  service.Init()
 
+  server, _ := mdns.NewServer(&mdns.Config{Zone: service})
+  return server
 }
 
 func listenForTcp(port string, quotes []string, strictMode bool) {
-	tcp, err := net.Listen("tcp", "localhost:"+port)
 	tcp, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		log.Fatal("Error listening: ", err.Error())

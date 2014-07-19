@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/armon/mdns"
 	"github.com/codegangsta/cli"
 	"github.com/nu7hatch/gouuid"
-  "github.com/armon/mdns"
 )
 
 const (
@@ -60,10 +60,10 @@ func main() {
 			startUdp = true
 		}
 
-    if advertiseService {
-      advertisedService := advertiseQOTDService(startTcp, startUdp, port)
-      defer advertisedService.Shutdown()
-    }
+		if advertiseService {
+			advertisedService := advertiseQOTDService(startTcp, startUdp, port)
+			defer advertisedService.Shutdown()
+		}
 
 		if startUdp {
 			go listenForUdp(port, quotes, strictMode)
@@ -86,20 +86,20 @@ func main() {
 	app.Run(os.Args)
 }
 
-func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool, port string) *mdns.Server{
-  host, _ := os.Hostname()
-  println(host)
-  service := &mdns.MDNSService{
-    Instance: host,
-    Service: "_qotd._tcp",
-    Addr:    []byte{0,0,0,0},
-    Port:    3333,
-    Info:    "QOTD Service",
-  }
-  service.Init()
+func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool, port string) *mdns.Server {
+	host, _ := os.Hostname()
+	println(host)
+	service := &mdns.MDNSService{
+		Instance: host,
+		Service:  "_qotd._tcp",
+		Addr:     []byte{0, 0, 0, 0},
+		Port:     3333,
+		Info:     "QOTD Service",
+	}
+	service.Init()
 
-  server, _ := mdns.NewServer(&mdns.Config{Zone: service})
-  return server
+	server, _ := mdns.NewServer(&mdns.Config{Zone: service})
+	return server
 }
 
 func listenForTcp(port string, quotes []string, strictMode bool) {

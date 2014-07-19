@@ -70,6 +70,11 @@ that doesn't fit your needs, you have a couple of flags:
 You can test the TCP interface with netcat: `nc localhost 3333` And you can test on UDP
 as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 
+## IPv6
+
+IPv6 is supported on operating systems that support it.  You'll be
+pleased to know that it worked nicely.
+
 ## Next Steps / Project Goals
 
 - [X] Accept file as CLI argument

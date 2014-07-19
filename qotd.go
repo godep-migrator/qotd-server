@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/armon/mdns"
 	"github.com/codegangsta/cli"
 	"github.com/nu7hatch/gouuid"
 )
@@ -37,6 +38,7 @@ func main() {
 		cli.BoolFlag{"strict", "quotes served in RFC 865 strict mode"},
 		cli.BoolFlag{"no-tcp", "server does not listen on tcp"},
 		cli.BoolFlag{"no-udp", "server does not listen on udp"},
+		cli.BoolFlag{"no-mdns", "server does not advertise over mdns"},
 	}
 
 	app.Action = func(c *cli.Context) {
@@ -50,11 +52,17 @@ func main() {
 		strictMode := c.Bool("strict")
 		startUdp := !c.Bool("no-udp")
 		startTcp := !c.Bool("no-tcp")
+		advertiseService := !c.Bool("no-mdns")
 
 		if strictMode {
 			port = "17"
 			startTcp = true
 			startUdp = true
+		}
+
+		if advertiseService {
+			advertisedService := advertiseQOTDService(startTcp, startUdp, port)
+			defer advertisedService.Shutdown()
 		}
 
 		if startUdp {
@@ -78,8 +86,24 @@ func main() {
 	app.Run(os.Args)
 }
 
+func advertiseQOTDService(advertiseTcp bool, advertiseUdp bool, port string) *mdns.Server {
+	host, _ := os.Hostname()
+	println(host)
+	service := &mdns.MDNSService{
+		Instance: host,
+		Service:  "_qotd._tcp",
+		Addr:     []byte{0, 0, 0, 0},
+		Port:     3333,
+		Info:     "QOTD Service",
+	}
+	service.Init()
+
+	server, _ := mdns.NewServer(&mdns.Config{Zone: service})
+	return server
+}
+
 func listenForTcp(port string, quotes []string, strictMode bool) {
-	tcp, err := net.Listen("tcp", "localhost:"+port)
+	tcp, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
 		log.Fatal("Error listening: ", err.Error())
 		os.Exit(1)

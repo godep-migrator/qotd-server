@@ -3,6 +3,10 @@ full featured.
 
 > You can get *anywhere* in ten minutes if you drive fast enough.
 
+There's also a sister project, [QOTD
+Client](https://github.com/nixterrimus/qotd-client).  While netcat works
+good for testing the client is more full featured.
+
 ## Try it out
 
 - Install the server: `go get -u github.com/nixterrimus/qotd-server`
@@ -75,6 +79,23 @@ as well: `echo -n " " | nc -4u -w1 localhost 3333`.
 IPv6 is supported on operating systems that support it.  You'll be
 pleased to know that it worked nicely.
 
+## Interface
+
+By default `0.0.0.0` but not forever.
+
+## Service Discovery
+
+The QOTD service is, by default advertised over
+[MDNS](http://en.wikipedia.org/wiki/Multicast_DNS).  This makes it
+possible for clients to find the server with zero config, pretty neat!
+
+If that doesn't work for you, can specify `--no-mdns` to turn off
+advertising the service.
+
+Since some networks restrict publishing multicast DNS it's possible that
+this feature just won't work on your network.  . Notably, multicast cannot be used 
+in any sort of cloud, or shared infrastructure environment.
+
 ## Next Steps / Project Goals
 
 - [X] Accept file as CLI argument
@@ -88,11 +109,6 @@ character truncation)
 - [ ] Installable through homebrew
 - [ ] Advertise QOTD over MDNS
 - [ ] Never serve clients the same quote twice
-
-## Client Goals
-
-- [ ] Find Server over MDNS
-- [ ] Allow `host port` as args
 
 ## Install through homebrew
 

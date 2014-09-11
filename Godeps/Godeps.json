@@ -1,0 +1,41 @@
+{
+	"ImportPath": "github.com/nixterrimus/qotd-server",
+	"GoVersion": "go1.3",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/go.net/ipv4",
+			"Comment": "null-144",
+			"Rev": "ad01a6fcc8a19d3a4478c836895ffe883bd2ceab"
+		},
+		{
+			"ImportPath": "code.google.com/p/go.net/ipv6",
+			"Comment": "null-144",
+			"Rev": "ad01a6fcc8a19d3a4478c836895ffe883bd2ceab"
+		},
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.2.0-9-g97978e5",
+			"Rev": "97978e5e5483a3f926c2bb6e19f9e2ff344e81f0"
+		},
+		{
+			"ImportPath": "github.com/armon/mdns",
+			"Rev": "decec489d7885d111d55ea4d41581d0dfbd7f046"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.0.0-74-g5ddbbe3",
+			"Rev": "5ddbbe33e57edd8bdbe29a1592cd842a82752074"
+		},
+		{
+			"ImportPath": "github.com/miekg/dns",
+			"Rev": "af4ef472c049c91f7230a2af08906aebf7369be6"
+		},
+		{
+			"ImportPath": "github.com/nu7hatch/gouuid",
+			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+		}
+	]
+}
